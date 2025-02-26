@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RecompenseRequest {
-
-
     private String description;
-    private  Integer pointsRequis;
-
+    private Integer pointsRequis;
+    private Long userId;
 }

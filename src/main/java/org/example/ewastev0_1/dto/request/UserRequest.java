@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserRequest {
-
     private String username;
 
     private String email;
@@ -20,4 +19,5 @@ public class UserRequest {
 
     private String role;
 
+    private Integer points;
 }

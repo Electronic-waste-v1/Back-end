@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "users")
 @Entity
 public class User {
     @Id
@@ -27,6 +28,8 @@ public class User {
     private String password;
 
     private String role;
+
+    private Integer points;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Annonce> annonces;

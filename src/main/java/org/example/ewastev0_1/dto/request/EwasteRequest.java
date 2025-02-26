@@ -25,16 +25,5 @@ public class EwasteRequest {
     private Etatwaste etat;
 
     private Integer user_id;
-    private List<AnnonceResponse> annonce;
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    private static class AnnonceResponse {
-        private String title;
-        private String description;
-        private Double prix;
 
-        private Etat etat;
-    }
 }

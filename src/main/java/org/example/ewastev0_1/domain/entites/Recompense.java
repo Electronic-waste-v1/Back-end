@@ -1,9 +1,7 @@
 package org.example.ewastev0_1.domain.entites;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,11 +14,13 @@ import lombok.Setter;
 @Entity
 public class Recompense {
 
-    @jakarta.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     private String description;
     private  Integer pointsRequis;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User utilisateur;
 }

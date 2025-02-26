@@ -14,9 +14,7 @@ import java.util.List;
 public class RecyclingCenterRequest {
 
     private String contact;
-
     private String nom;
     private String adresse;
-
     private List<String> acceptedTypes;
 }

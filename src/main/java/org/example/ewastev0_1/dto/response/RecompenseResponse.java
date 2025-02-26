@@ -11,4 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RecompenseResponse {
+    private int id;
+    private String description;
+    private Integer pointsRequis;
+    private UserResponse utilisateur;
 }

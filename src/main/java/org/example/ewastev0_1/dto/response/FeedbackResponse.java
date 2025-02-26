@@ -6,9 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FeedbackResponse {
+    private int id;
+    private String comment;
+    private String note;
+    private LocalDate date;
 }
