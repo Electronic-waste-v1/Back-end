@@ -22,35 +22,37 @@ public class EwasteController {
 
     private final EwasteService ewasteService;
 
-
-
     @GetMapping
     public ResponseEntity<List<EwasteResponse>> getAllEwaste() {
-        return null;
+        List<EwasteResponse> ewasteResponse=ewasteService.getAllEwastes();
+        return ResponseEntity.status(HttpStatus.OK).body(ewasteResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EwasteResponse> getEwasteById(@PathVariable Long id) {
-      return null;
+    public ResponseEntity<EwasteResponse> getEwasteById(@PathVariable Integer id) {
+        EwasteResponse ewasteResponse=ewasteService.getEwasteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ewasteResponse)  ;
     }
 
 
     @PostMapping
     public ResponseEntity<EwasteResponse> createEwaste(@Valid @RequestBody EwasteRequest ewasteDto) {
         EwasteResponse response = ewasteService.createEwaste(ewasteDto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<EwasteResponse> updateEwaste(@PathVariable Long id, @Valid @RequestBody EwasteRequest ewasteDto) {
-        return null;
+    public ResponseEntity<EwasteResponse> updateEwaste(@PathVariable Integer id, @Valid @RequestBody EwasteRequest ewasteDto) {
+        EwasteResponse response = ewasteService.updateEwaste(id, ewasteDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEwaste(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<Void> deleteEwaste(@PathVariable Integer id) {
+        ewasteService.deleteEwaste(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

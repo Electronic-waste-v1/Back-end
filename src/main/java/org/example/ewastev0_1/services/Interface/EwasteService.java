@@ -11,23 +11,23 @@ public interface EwasteService {
     EwasteResponse createEwaste(EwasteRequest request);
 
 
-    EwasteResponse getEwasteById(Long id);
+    EwasteResponse getEwasteById(Integer id);
 
 
-    EwasteResponse updateEwaste(Long id, EwasteRequest request);
+    EwasteResponse updateEwaste(Integer id, EwasteRequest request);
 
 
-    void deleteEwaste(Long id);
+    void deleteEwaste(Integer id);
 
 
     List<EwasteResponse> getAllEwastes();
 
 
-    List<EwasteResponse> getEwastesByUser(Long userId);
+    List<EwasteResponse> getEwastesByUser(Integer userId);
 
 
     List<EwasteResponse> searchEwasteByCategory(String category);
 
 
-    EwasteResponse updateEwasteStatus(Long id, EwasteRequest etat);
+    EwasteResponse updateEwasteStatus(Integer id, EwasteRequest etat);
 }
