@@ -29,7 +29,6 @@ public class User {
 
     private String role;
 
-    private Integer points;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Annonce> annonces;
