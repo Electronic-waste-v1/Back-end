@@ -14,5 +14,5 @@ public class RecompenseResponse {
     private int id;
     private String description;
     private Integer pointsRequis;
-    private UserResponse utilisateur;
+    private UserResponse userResponse;
 }

@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface RecompenseService {
     RecompenseResponse addRecompense(RecompenseRequest request);
-    RecompenseResponse updateRecompense(Long id, RecompenseRequest request);
-    void deleteRecompense(Long id);
-    RecompenseResponse getRecompenseById(Long id);
+    RecompenseResponse updateRecompense(Integer id, RecompenseRequest request);
+    void deleteRecompense(Integer id);
+    RecompenseResponse getRecompenseById(Integer id);
     List<RecompenseResponse> getAllRecompenses();
-    void assignRecompenseToUser(Long userId, Long recompenseId);
-    List<RecompenseResponse> getRecompensesByUserId(Long userId);
+    void assignRecompenseToUser(Integer userId, Integer recompenseId);
+    List<RecompenseResponse> getRecompensesByUserId(Integer userId);
 }
