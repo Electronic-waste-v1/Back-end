@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.ewastev0_1.domain.entites.Enum.Etat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,5 +33,7 @@ public class Annonce {
     @JoinColumn(name = "waste_id")
     private Ewaste ewaste;
 
+
+    private Boolean disponibilite = true;
 
 }
