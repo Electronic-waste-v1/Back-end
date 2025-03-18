@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
-public interface RecyclingMapper {
+public interface RecyclingCenterMapper {
 
     RecyclingCenter toEntity(RecyclingCenterRequest recyclingCenterRequest);
     RecyclingcenterResponse toResponse(RecyclingCenter recyclingCenter);
