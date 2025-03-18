@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 import org.example.ewastev0_1.domain.entites.Enum.Etat;
 import org.example.ewastev0_1.domain.entites.Ewaste;
 import org.example.ewastev0_1.domain.entites.User;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,4 +32,5 @@ public class AnnonceRequest {
 
 
     private Integer waste_id;
+    private transient List<MultipartFile> images;
 }

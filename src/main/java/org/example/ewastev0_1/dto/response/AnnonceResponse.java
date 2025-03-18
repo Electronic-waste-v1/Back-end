@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.ewastev0_1.domain.entites.Enum.Etat;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,5 @@ public class AnnonceResponse {
     private Etat etat;
     private UserResponse user;
     private EwasteResponse ewaste;
+    private List<String> images;
 }
