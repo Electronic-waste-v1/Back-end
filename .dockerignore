@@ -1,0 +1,6 @@
+# .dockerignore
+.git
+target/
+*.iml
+.idea/
+*.log
