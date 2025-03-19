@@ -2,18 +2,23 @@ package org.example.ewastev0_1.services.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.ewastev0_1.domain.entites.ActionHistorique;
 import org.example.ewastev0_1.domain.entites.Ewaste;
+import org.example.ewastev0_1.domain.entites.UserPoints;
 import org.example.ewastev0_1.dto.request.EwasteRequest;
 import org.example.ewastev0_1.dto.response.EwasteResponse;
 import org.example.ewastev0_1.exception.ResourceNotFoundException;
 import org.example.ewastev0_1.mapper.EwasteMapper;
+import org.example.ewastev0_1.repository.ActionHistoriqueRepository;
 import org.example.ewastev0_1.repository.EwasteRepository;
+import org.example.ewastev0_1.repository.UserPointsRepository;
 import org.example.ewastev0_1.services.Interface.AnnonceService;
 import org.example.ewastev0_1.services.Interface.EwasteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,15 +28,57 @@ import java.util.List;
 public class EwasteServiceImpl implements EwasteService {
     private final EwasteMapper ewasteMapper;
     private final EwasteRepository ewasteRepository;
+    private final UserPointsRepository userPointsRepository;
+    private final ActionHistoriqueRepository actionHistoriqueRepository;
 
     @Override
     public EwasteResponse createEwaste(EwasteRequest request) {
         log.info("Creating new e-waste with details: {}", request);
         Ewaste ewaste = ewasteMapper.toEntity(request);
         Ewaste savedEwaste = ewasteRepository.save(ewaste);
+
+
+        calculateAndAssignPoints(savedEwaste.getUser().getId(), "RECYCLE", savedEwaste.getId());
+
         log.info("E-waste created successfully with ID: {}", savedEwaste.getId());
         return ewasteMapper.toResponse(savedEwaste);
     }
+
+    private void calculateAndAssignPoints(Integer userId, String actionType, Integer ewasteId) {
+        UserPoints userPoints = userPointsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User points not found for user ID: " + userId));
+
+        int pointsEarned = 0;
+        switch (actionType) {
+            case "RECYCLE":
+                pointsEarned = 10;
+                break;
+            case "DONATE":
+                pointsEarned = 5;
+                break;
+            case "REPAIR":
+                pointsEarned = 7;
+                break;
+            default:
+                log.warn("Unknown action type: {}", actionType);
+                return;
+        }
+
+        userPoints.setPointsTotal(userPoints.getPointsTotal() + pointsEarned);
+        userPointsRepository.save(userPoints);
+
+        ActionHistorique action = new ActionHistorique();
+        action.setUser(userPoints.getUser());
+        action.setActionType(actionType);
+        action.setDescription("Points awarded for " + actionType);
+        action.setPointsGagnes(pointsEarned);
+        action.setDateAction(LocalDateTime.now());
+        action.setEwaste(ewasteRepository.findById(ewasteId).orElse(null));
+        actionHistoriqueRepository.save(action);
+
+        log.info("Awarded {} points to user ID: {} for action: {}", pointsEarned, userId, actionType);
+    }
+
 
     @Override
     public EwasteResponse getEwasteById(Integer id) {

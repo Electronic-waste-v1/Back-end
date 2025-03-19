@@ -120,7 +120,6 @@ public class RecompenseServiceImpl implements RecompenseService {
 
         log.info("Recompense ID: {} successfully assigned to user ID: {}", recompenseId, userId);
     }
-
     @Override
     public List<RecompenseResponse> getRecompensesByUserId(Integer userId) {
         log.info("Fetching recompenses for user ID: {}", userId);

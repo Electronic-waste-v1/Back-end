@@ -62,19 +62,18 @@ public class ImpactServiceImpl implements ImpactService {
     public ImpactResponse getTotalImpact() {
         log.info("Calculating total environmental impact across all users");
 
-        // Get all recycling actions
+  
         List<ActionHistorique> allActions = actionHistoriqueRepository.findByActionType("RECYCLE");
 
-        // Calculate metrics from recycling history
-        double co2Reduction = allActions.size() * 5.2; // 5.2 kg of CO2 saved per recycled device (example)
-        double waterSaved = allActions.size() * 1000; // 1000 liters of water saved per recycled device (example)
-        double materialsRecovered = allActions.size() * 0.5; // 0.5 kg of materials per recycled device (example)
+        double co2Reduction = allActions.size() * 5.2;
+        double waterSaved = allActions.size() * 1000;
+        double materialsRecovered = allActions.size() * 0.5;
 
         log.info("Total system impact calculated. CO2: {} kg, Water: {} L, Materials: {} kg",
                 co2Reduction, waterSaved, materialsRecovered);
 
         return ImpactResponse.builder()
-                .userId(null) // null indicates system-wide impact
+                .userId(null)
                 .co2Reduction(co2Reduction)
                 .waterSaved(waterSaved)
                 .materialsRecovered(materialsRecovered)

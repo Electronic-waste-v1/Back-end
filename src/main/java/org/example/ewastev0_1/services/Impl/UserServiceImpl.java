@@ -3,9 +3,11 @@ package org.example.ewastev0_1.services.Impl;
 import lombok.RequiredArgsConstructor;
 import org.example.ewastev0_1.config.JwtTokenUtil;
 import org.example.ewastev0_1.domain.entites.User;
+import org.example.ewastev0_1.domain.entites.UserPoints;
 import org.example.ewastev0_1.dto.request.UserRequest;
 import org.example.ewastev0_1.dto.response.UserResponse;
 import org.example.ewastev0_1.mapper.UserMapper;
+import org.example.ewastev0_1.repository.UserPointsRepository;
 import org.example.ewastev0_1.repository.UserRepository;
 import org.example.ewastev0_1.services.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserPointsRepository userPointsRepository;
     @Override
     public UserResponse register(UserRequest userResquest) {
 
@@ -36,7 +39,14 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(user);
 
 
+        UserPoints userPoints = UserPoints.builder()
+                .user(savedUser)
+                .pointsTotal(0)
+                .pointsUtilises(0)
+                .build();
+        userPointsRepository.save(userPoints);
 
         return userMapper.toResponse(savedUser);
+
     }
 }

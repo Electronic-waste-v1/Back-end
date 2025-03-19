@@ -40,17 +40,17 @@ public class StatisticsServiceImpl implements StatisticsService {
             throw new ResourceNotFoundException("User not found with ID: " + userId);
         }
 
-        // Calculate metrics from user's recycling history
+
         List<ActionHistorique> actions = actionHistoriqueRepository.findByUserIdAndActionType(userId, "RECYCLE");
 
-        // Calculate CO2 reduction (example calculation)
-        double co2Reduction = actions.size() * 5.2; // 5.2 kg of CO2 saved per recycled device
 
-        // Calculate energy saved (example calculation)
-        double energySaved = actions.size() * 10.5; // 10.5 kWh saved per recycled device
+        double co2Reduction = actions.size() * 5.2;
 
-        // Calculate raw materials saved (example calculation)
-        double rawMaterialsSaved = actions.size() * 0.8; // 0.8 kg of raw materials per recycled device
+
+        double energySaved = actions.size() * 10.5;
+
+
+        double rawMaterialsSaved = actions.size() * 0.8;
 
         log.info("Environmental impact calculated for user ID: {}", userId);
 
@@ -63,6 +63,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .build();
     }
 
+
+
     @Override
     public UserStatisticsResponse getUserStatistics(Integer userId) {
         log.info("Retrieving statistics for user ID: {}", userId);
@@ -72,20 +74,20 @@ public class StatisticsServiceImpl implements StatisticsService {
             throw new ResourceNotFoundException("User not found with ID: " + userId);
         }
 
-        // Get recycled devices count
+
         long recycledCount = ewasteRepository.countByUserIdAndEtat(userId, "À Recycler");
 
-        // Get donated devices count
+
         long donatedCount = ewasteRepository.countByUserIdAndEtat(userId, "Donné");
 
-        // Get repaired devices count
+
         long repairedCount = ewasteRepository.countByUserIdAndEtat(userId, "Réparable");
 
-        // Get total points
+
         UserPoints userPoints = userPointsRepository.findByUserId(userId)
                 .orElse(UserPoints.builder().pointsTotal(0).pointsUtilises(0).build());
 
-        // Get ranking (based on points)
+
         long userRank = userPointsRepository.countByPointsTotalGreaterThan(userPoints.getPointsTotal()) + 1;
 
         log.info("Statistics retrieved for user ID: {}", userId);
@@ -105,7 +107,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public LeaderboardResponse getLeaderboard() {
         log.info("Generating leaderboard");
 
-        // Get top 10 users by points
+
         List<UserPoints> topUsers = userPointsRepository.findTop10ByOrderByPointsTotalDesc();
 
         List<LeaderboardEntryResponse> entries = topUsers.stream()
