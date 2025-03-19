@@ -14,5 +14,8 @@ public interface EwasteRepository extends JpaRepository<Ewaste, Integer> {
 
     List<Ewaste> findByCategorie(String category);
 
+ ;
 
+    // Count e-waste items by user ID and state
+    long countByUserIdAndEtat(Integer userId, String etat);
 }

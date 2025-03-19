@@ -22,5 +22,7 @@ public class Recompense {
     private  Integer pointsRequis;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User utilisateur;
+    private User user;
+
+
 }
