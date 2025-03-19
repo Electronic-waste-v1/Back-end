@@ -23,4 +23,13 @@ public class Feedback {
     private String  note;
     @Column(nullable = false)
     private LocalDate date;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user1_id", nullable = false)
+    private User fromUser;
+
+    @ManyToOne
+    @JoinColumn(name = "user2_id", nullable = false)
+    private User toUser;
 }

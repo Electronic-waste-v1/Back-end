@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserStatisticsResponse {
-    private Long userId;
-    private int devicesRecycled;
-    private int devicesDonated;
-    private int pointsEarned;
-    private double totalCo2Saved;
-    private double totalWasteReduced;
+    private Integer userId; // ID of the user
+    private Long recycledDevicesCount; // Number of devices recycled by the user
+    private Long donatedDevicesCount; // Number of devices donated by the user
+    private Long repairedDevicesCount; // Number of devices repaired by the user
+    private Integer totalPoints; // Total points earned by the user
+    private Integer availablePoints; // Available points (total points - used points)
+    private Long userRanking;
 }

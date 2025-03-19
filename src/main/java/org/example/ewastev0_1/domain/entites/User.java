@@ -33,7 +33,17 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Annonce> annonces;
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Recompense> recompenses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Ewaste> ewastes ;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Notification> notifications ;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserPoints userPoints;
 
 }
