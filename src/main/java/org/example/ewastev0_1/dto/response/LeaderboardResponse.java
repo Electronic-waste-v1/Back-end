@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class LeaderboardResponse {
-    private Long userId;
-    private String username;
-    private int points;
-    private int rank;
+    private List<LeaderboardEntryResponse> entries; // List of leaderboard entries
+    private LocalDateTime generatedAt; // Timestamp when the leaderboard was generated
 }

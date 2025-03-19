@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class EnvironmentalImpactResponse {
-    private Long userId;
-    private double co2Saved;
-    private double wasteReduced;
-    private int devicesRecycled;
+    private Integer userId; // ID of the user
+    private Double co2Reduction; // Total CO2 reduction in kg
+    private Double energySaved; // Total energy saved in kWh
+    private Double rawMaterialsSaved; // Total raw materials saved in kg
+    private Integer recycledDevicesCount; //
 }
