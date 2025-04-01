@@ -78,4 +78,10 @@ public class AnnonceController {
         List<AnnonceResponse> responses = annonceService.filterAnnoncesByCondition(condition);
         return ResponseEntity.ok(responses);
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<AnnonceResponse>> getAnnoncesByUserId(@PathVariable Integer userId) {
+        log.info("Received request to fetch annonces for user ID: {}", userId);
+        List<AnnonceResponse> responses = annonceService.getAnnoncesByUserId(userId);
+        return ResponseEntity.ok(responses);
+    }
 }

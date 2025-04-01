@@ -14,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LeaderboardResponse {
-    private List<LeaderboardEntryResponse> entries; // List of leaderboard entries
-    private LocalDateTime generatedAt; // Timestamp when the leaderboard was generated
+    private List<LeaderboardEntryResponse> entries;
+    private LocalDateTime generatedAt;
 }

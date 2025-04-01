@@ -1,0 +1,55 @@
+name: Backend Pipline
+
+on:
+  pull_request:
+    branches:
+      - "master"
+
+permissions:
+  checks: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup maven dependencies caching
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Package the appllication
+        run: cd server && mvn clean package -DskipTests
+
+      - name: Run tests
+        run: cd server && mvn test
+
+      - name: Upload Test Reports
+        uses: dorny/test-reporter@v1
+        if: success()
+        with:
+          name: "Unit Test Results"
+          path: "server/target/surefire-reports/*.xml"
+          reporter: java-junit
+
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: anwarbel/ewaste-server
+          tags: latest
+          registry: docker.io
+          dockerfile: server/Dockerfile
+          directory: server
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}

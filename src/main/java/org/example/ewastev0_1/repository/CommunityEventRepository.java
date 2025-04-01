@@ -1,7 +1,7 @@
 package org.example.ewastev0_1.repository;
 
-import org.example.ewastev0_1.domain.entities.CommunityEvent;
-import org.example.ewastev0_1.domain.entities.User;
+import org.example.ewastev0_1.domain.entites.CommunityEvent;
+import org.example.ewastev0_1.domain.entites.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

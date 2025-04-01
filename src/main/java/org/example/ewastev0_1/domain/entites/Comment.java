@@ -1,4 +1,4 @@
-package org.example.ewastev0_1.domain.entities;
+package org.example.ewastev0_1.domain.entites;
 
 import jakarta.persistence.*;
 import lombok.*;

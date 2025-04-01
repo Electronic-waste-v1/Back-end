@@ -2,7 +2,9 @@ package org.example.ewastev0_1.services.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.ewastev0_1.domain.entities.*;
+
+
+import org.example.ewastev0_1.domain.entites.*;
 import org.example.ewastev0_1.dto.request.*;
 import org.example.ewastev0_1.dto.response.*;
 import org.example.ewastev0_1.exception.ResourceNotFoundException;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -31,19 +33,29 @@ public class CommunityServiceImpl implements CommunityService {
     private final CommunityChallengeRepository challengeRepository;
     private final UserRepository userRepository;
     private final CommunityMapper mapper;
-    
-    // Post operations
+
     @Override
     public PagedResponse<CommunityPostResponse> getAllPosts(Pageable pageable, Integer currentUserId) {
         log.info("Fetching all posts with pagination");
         User currentUser = getUserById(currentUserId);
-        
-        Page<CommunityPost> posts = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+
+        Page<CommunityPost> posts = postRepository.findAll(pageable);
         Page<CommunityPostResponse> postResponses = posts.map(post -> mapper.mapToResponse(post, currentUser));
-        
+
         return mapper.mapToPagedResponse(postResponses);
     }
-    
+
+//    @Override
+//    public PagedResponse<CommunityPostResponse> searchPosts(String keyword, Pageable pageable, Integer currentUserId) {
+//        log.info("Searching posts with keyword: {}", keyword);
+//        User currentUser = getUserById(currentUserId);
+//
+//        Page<CommunityPost> posts = postRepository.searchPosts(keyword, pageable);
+//        Page<CommunityPostResponse> postResponses = posts.map(post -> mapper.mapToResponse(post, currentUser));
+//
+//        return mapper.mapToPagedResponse(postResponses);
+//    }
+//
     @Override
     public CommunityPostResponse getPostById(Integer postId, Integer currentUserId) {
         log.info("Fetching post with ID: {}", postId);
@@ -70,8 +82,7 @@ public class CommunityServiceImpl implements CommunityService {
         log.info("Updating post with ID: {} by user ID: {}", postId, currentUserId);
         User currentUser = getUserById(currentUserId);
         CommunityPost post = getPostEntityById(postId);
-        
-        // Check if the current user is the author
+
         if (!post.getAuthor().getId().equals(currentUserId)) {
             log.error("User ID: {} is not authorized to update post ID: {}", currentUserId, postId);
             throw new UnauthorizedException("You are not authorized to update this post");
@@ -92,8 +103,7 @@ public class CommunityServiceImpl implements CommunityService {
     public void deletePost(Integer postId, Integer currentUserId) {
         log.info("Deleting post with ID: {} by user ID: {}", postId, currentUserId);
         CommunityPost post = getPostEntityById(postId);
-        
-        // Check if the current user is the author
+
         if (!post.getAuthor().getId().equals(currentUserId)) {
             log.error("User ID: {} is not authorized to delete post ID: {}", currentUserId, postId);
             throw new UnauthorizedException("You are not authorized to delete this post");
@@ -102,23 +112,31 @@ public class CommunityServiceImpl implements CommunityService {
         postRepository.delete(post);
         log.info("Post deleted with ID: {}", postId);
     }
-    
+
     @Override
     public CommunityPostResponse likePost(Integer postId, Integer userId) {
         log.info("User ID: {} liking post ID: {}", userId, postId);
+
+
         User user = getUserById(userId);
         CommunityPost post = getPostEntityById(postId);
-        
+
+
+        if (post.getLikesCount() == null) {
+            post.setLikesCount(0);
+        }
+
         if (!post.getLikedBy().contains(user)) {
             post.getLikedBy().add(user);
             post.setLikesCount(post.getLikesCount() + 1);
-            postRepository.save(post);
-            log.info("Post liked successfully");
+            CommunityPost savedPost = postRepository.save(post);
+
+            log.info("Post {} liked by user {}. Total likes: {}",
+                    savedPost.getId(), user.getId(), savedPost.getLikesCount());
         }
-        
+
         return mapper.mapToResponse(post, user);
     }
-    
     @Override
     public CommunityPostResponse unlikePost(Integer postId, Integer userId) {
         log.info("User ID: {} unliking post ID: {}", userId, postId);
@@ -139,10 +157,10 @@ public class CommunityServiceImpl implements CommunityService {
     public PagedResponse<CommunityPostResponse> searchPosts(String keyword, Pageable pageable, Integer currentUserId) {
         log.info("Searching posts with keyword: {}", keyword);
         User currentUser = getUserById(currentUserId);
-        
+
         Page<CommunityPost> posts = postRepository.searchPosts(keyword, pageable);
         Page<CommunityPostResponse> postResponses = posts.map(post -> mapper.mapToResponse(post, currentUser));
-        
+
         return mapper.mapToPagedResponse(postResponses);
     }
     
@@ -191,20 +209,23 @@ public class CommunityServiceImpl implements CommunityService {
         
         return mapper.mapToPagedResponse(commentResponses);
     }
-    
+
     @Override
     public CommentResponse addComment(Integer postId, CommentRequest request, Integer authorId) {
         log.info("Adding comment to post ID: {} by user ID: {}", postId, authorId);
         User author = getUserById(authorId);
         CommunityPost post = getPostEntityById(postId);
-        
+
         Comment comment = mapper.mapToEntity(request, author, post);
         Comment savedComment = commentRepository.save(comment);
-        
-        // Update comment count on post
+
+        // Initialize commentsCount if null
+        if (post.getCommentsCount() == null) {
+            post.setCommentsCount(0);
+        }
         post.setCommentsCount(post.getCommentsCount() + 1);
         postRepository.save(post);
-        
+
         log.info("Comment added with ID: {}", savedComment.getId());
         return mapper.mapToResponse(savedComment, author);
     }
@@ -253,7 +274,7 @@ public class CommunityServiceImpl implements CommunityService {
         log.info("User ID: {} liking comment ID: {}", userId, commentId);
         User user = getUserById(userId);
         Comment comment = getCommentEntityById(commentId);
-        
+        log.info("dslkjsdk");
         if (!comment.getLikedBy().contains(user)) {
             comment.getLikedBy().add(user);
             comment.setLikesCount(comment.getLikesCount() + 1);
@@ -374,23 +395,31 @@ public class CommunityServiceImpl implements CommunityService {
         eventRepository.delete(event);
         log.info("Event deleted with ID: {}", eventId);
     }
-    
+
     @Override
     public CommunityEventResponse attendEvent(Integer eventId, Integer userId) {
         log.info("User ID: {} attending event ID: {}", userId, eventId);
         User user = getUserById(userId);
         CommunityEvent event = getEventEntityById(eventId);
-        
+        log.info("event: {}", event);
+
         if (!event.getAttendees().contains(user)) {
             event.getAttendees().add(user);
-            event.setAttendeesCount(event.getAttendeesCount() + 1);
+
+
+            Integer currentCount = event.getAttendeesCount();
+            if (currentCount == null) {
+                event.setAttendeesCount(1);
+            } else {
+                event.setAttendeesCount(currentCount + 1);
+            }
+
             eventRepository.save(event);
             log.info("User is now attending the event");
         }
-        
+
         return mapper.mapToResponse(event, user);
     }
-    
     @Override
     public CommunityEventResponse unattendEvent(Integer eventId, Integer userId) {
         log.info("User ID: {} unattending event ID: {}", userId, eventId);
@@ -407,7 +436,7 @@ public class CommunityServiceImpl implements CommunityService {
         return mapper.mapToResponse(event, user);
     }
     
-    // Challenge operations
+
     @Override
     public PagedResponse<CommunityChallengeResponse> getActiveChallenges(Pageable pageable, Integer currentUserId) {
         log.info("Fetching active challenges");
@@ -468,7 +497,7 @@ public class CommunityServiceImpl implements CommunityService {
         User currentUser = getUserById(currentUserId);
         CommunityChallenge challenge = getChallengeEntityById(challengeId);
         
-        // Check if the current user is the creator
+
         if (!challenge.getCreator().getId().equals(currentUserId)) {
             log.error("User ID: {} is not authorized to update challenge ID: {}", currentUserId, challengeId);
             throw new UnauthorizedException("You are not authorized to update this challenge");
@@ -493,7 +522,7 @@ public class CommunityServiceImpl implements CommunityService {
         log.info("Deleting challenge with ID: {} by user ID: {}", challengeId, currentUserId);
         CommunityChallenge challenge = getChallengeEntityById(challengeId);
         
-        // Check if the current user is the creator
+
         if (!challenge.getCreator().getId().equals(currentUserId)) {
             log.error("User ID: {} is not authorized to delete challenge ID: {}", currentUserId, challengeId);
             throw new UnauthorizedException("You are not authorized to delete this challenge");
@@ -502,20 +531,31 @@ public class CommunityServiceImpl implements CommunityService {
         challengeRepository.delete(challenge);
         log.info("Challenge deleted with ID: {}", challengeId);
     }
-    
+
     @Override
     public CommunityChallengeResponse joinChallenge(Integer challengeId, Integer userId) {
         log.info("User ID: {} joining challenge ID: {}", userId, challengeId);
+
         User user = getUserById(userId);
         CommunityChallenge challenge = getChallengeEntityById(challengeId);
-        
+
+
+        log.debug("User {} joining challenge {}", user.getId(), challenge.getId());
+
+        // Initialize counts if null (defensive programming)
+        if (challenge.getParticipantsCount() == null) {
+            challenge.setParticipantsCount(0);
+        }
+
         if (!challenge.getParticipants().contains(user)) {
             challenge.getParticipants().add(user);
             challenge.setParticipantsCount(challenge.getParticipantsCount() + 1);
-            challengeRepository.save(challenge);
-            log.info("User joined the challenge successfully");
+            CommunityChallenge savedChallenge = challengeRepository.save(challenge);
+
+            log.info("User {} joined challenge {}. Total participants: {}",
+                    user.getId(), challenge.getId(), savedChallenge.getParticipantsCount());
         }
-        
+
         return mapper.mapToResponse(challenge, user);
     }
     
@@ -547,7 +587,7 @@ public class CommunityServiceImpl implements CommunityService {
         return mapper.mapToResponse(updatedChallenge, null);
     }
     
-    // Helper methods
+
     private User getUserById(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));

@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
@@ -82,7 +84,7 @@ public class RecompenseServiceImpl implements RecompenseService {
         log.info("Retrieved {} recompenses", recompenses.size());
         return recompenses.stream()
                 .map(recompenseMapper::toResponse)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

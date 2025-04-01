@@ -55,4 +55,10 @@ public class EwasteController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EwasteResponse>> getEwastesByUserId(@PathVariable Integer userId) {
+        List<EwasteResponse> ewasteResponses = ewasteService.getEwastesByUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(ewasteResponses);
+    }
+
 }

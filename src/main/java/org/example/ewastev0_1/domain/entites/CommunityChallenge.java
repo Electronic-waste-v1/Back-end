@@ -1,4 +1,4 @@
-package org.example.ewastev0_1.domain.entities;
+package org.example.ewastev0_1.domain.entites;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,60 +13,60 @@ import java.util.Set;
 @Table(name = "community_challenges")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CommunityChallenge {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(nullable = false)
     private String title;
-    
+
     @Column(nullable = false, length = 2000)
     private String description;
-    
+
     @Column(nullable = false)
     private LocalDateTime startDate;
-    
+
     @Column(nullable = false)
     private LocalDateTime endDate;
-    
+
     @Column(name = "image_url")
     private String imageUrl;
-    
+
     @Column(nullable = false)
     private String reward;
-    
+
     @Column(name = "target_goal")
     private Integer targetGoal;
-    
-    @Column(name = "current_progress")
+
+    @Column(name = "current_progress", nullable = false)
     private Integer currentProgress = 0;
-    
-    @Column(name = "participants_count")
+
+    @Column(name = "participants_count", nullable = false)
     private Integer participantsCount = 0;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
     private User creator;
-    
+
     @ManyToMany
     @JoinTable(
-        name = "challenge_participants",
-        joinColumns = @JoinColumn(name = "challenge_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
+            name = "challenge_participants",
+            joinColumns = @JoinColumn(name = "challenge_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> participants = new HashSet<>();
-    
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
-

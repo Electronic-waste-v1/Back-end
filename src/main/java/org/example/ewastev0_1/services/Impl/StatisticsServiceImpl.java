@@ -3,6 +3,7 @@ package org.example.ewastev0_1.services.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.ewastev0_1.domain.entites.ActionHistorique;
+import org.example.ewastev0_1.domain.entites.Enum.Etatwaste;
 import org.example.ewastev0_1.domain.entites.User;
 import org.example.ewastev0_1.domain.entites.UserPoints;
 import org.example.ewastev0_1.dto.response.EnvironmentalImpactResponse;
@@ -41,7 +42,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
 
-        List<ActionHistorique> actions = actionHistoriqueRepository.findByUserIdAndActionType(userId, "RECYCLE");
+        List<ActionHistorique> actions = actionHistoriqueRepository.findByUser_IdAndActionType(userId, Etatwaste.Recycler.name());
 
 
         double co2Reduction = actions.size() * 5.2;
@@ -75,13 +76,16 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
 
-        long recycledCount = ewasteRepository.countByUserIdAndEtat(userId, "À Recycler");
+        long recycledCount = ewasteRepository.countByUserIdAndEtat(userId, Etatwaste.Recycler);
 
 
-        long donatedCount = ewasteRepository.countByUserIdAndEtat(userId, "Donné");
+
+        long donatedCount = ewasteRepository.countByUserIdAndEtat(userId, Etatwaste.Donne);
 
 
-        long repairedCount = ewasteRepository.countByUserIdAndEtat(userId, "Réparable");
+
+        long repairedCount = ewasteRepository.countByUserIdAndEtat(userId, Etatwaste.Reparable);
+
 
 
         UserPoints userPoints = userPointsRepository.findByUserId(userId)
@@ -117,7 +121,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                             .userId(user.getId())
                             .userName(user.getUsername())
                             .points(points.getPointsTotal())
-                            .recycledCount(ewasteRepository.countByUserIdAndEtat(user.getId(), "À Recycler"))
+                            .recycledCount(ewasteRepository.countByUserIdAndEtat(user.getId(), Etatwaste.Recycler))
                             .build();
                 })
                 .toList();

@@ -14,4 +14,5 @@ public interface AnnonceRepository extends JpaRepository<Annonce, Integer> {
     List<Annonce> findByPrixBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
     List<Annonce> findByEtat(Etat condition);
+    List<Annonce> findByUserId(Integer userId);
 }

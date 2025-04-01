@@ -17,13 +17,15 @@ import java.time.LocalDateTime;
 public class ActionHistorique {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "action_type")
     private String actionType;
+
     private String description;
     private Integer pointsGagnes;
     private LocalDateTime dateAction;

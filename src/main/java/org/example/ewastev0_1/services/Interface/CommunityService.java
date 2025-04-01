@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommunityService {
     
-    // Post operations
+
     PagedResponse<CommunityPostResponse> getAllPosts(Pageable pageable, Integer currentUserId);
     
     CommunityPostResponse getPostById(Integer postId, Integer currentUserId);
@@ -29,7 +29,7 @@ public interface CommunityService {
     
     PagedResponse<CommunityPostResponse> getMostCommentedPosts(Pageable pageable, Integer currentUserId);
     
-    // Comment operations
+
     PagedResponse<CommentResponse> getCommentsByPostId(Integer postId, Pageable pageable, Integer currentUserId);
     
     CommentResponse addComment(Integer postId, CommentRequest request, Integer authorId);
@@ -42,7 +42,7 @@ public interface CommunityService {
     
     CommentResponse unlikeComment(Integer commentId, Integer userId);
     
-    // Event operations
+
     PagedResponse<CommunityEventResponse> getUpcomingEvents(Pageable pageable, Integer currentUserId);
     
     PagedResponse<CommunityEventResponse> getOngoingEvents(Pageable pageable, Integer currentUserId);
@@ -61,7 +61,7 @@ public interface CommunityService {
     
     CommunityEventResponse unattendEvent(Integer eventId, Integer userId);
     
-    // Challenge operations
+
     PagedResponse<CommunityChallengeResponse> getActiveChallenges(Pageable pageable, Integer currentUserId);
     
     PagedResponse<CommunityChallengeResponse> getUpcomingChallenges(Pageable pageable, Integer currentUserId);

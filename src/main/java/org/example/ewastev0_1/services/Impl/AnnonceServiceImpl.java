@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
@@ -79,9 +81,8 @@ public class AnnonceServiceImpl implements AnnonceService {
         log.info("Retrieved {} annonces", annonces.size());
         return annonces.stream()
                 .map(annonceMapper::toResponse)
-                .toList();
+                .collect(Collectors.toList());
     }
-
     @Override
     public List<AnnonceResponse> searchAnnoncesByCategory(String category) {
         log.info("Searching annonces by category: {}", category);
@@ -108,6 +109,15 @@ public class AnnonceServiceImpl implements AnnonceService {
         Etat etat = Etat.valueOf(condition);
         List<Annonce> annonces = annonceRepository.findByEtat(etat);
         log.info("Found {} annonces with condition: {}", annonces.size(), condition);
+        return annonces.stream()
+                .map(annonceMapper::toResponse)
+                .toList();
+    }
+    @Override
+    public List<AnnonceResponse> getAnnoncesByUserId(Integer userId) {
+        log.info("Fetching annonces for user ID: {}", userId);
+        List<Annonce> annonces = annonceRepository.findByUserId(userId);
+        log.info("Found {} annonces for user ID: {}", annonces.size(), userId);
         return annonces.stream()
                 .map(annonceMapper::toResponse)
                 .toList();

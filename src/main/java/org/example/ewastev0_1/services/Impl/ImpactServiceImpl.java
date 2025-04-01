@@ -3,6 +3,7 @@ package org.example.ewastev0_1.services.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.ewastev0_1.domain.entites.ActionHistorique;
+import org.example.ewastev0_1.domain.entites.Enum.Etatwaste;
 import org.example.ewastev0_1.domain.entites.User;
 import org.example.ewastev0_1.dto.response.ImpactResponse;
 import org.example.ewastev0_1.exception.ResourceNotFoundException;
@@ -33,18 +34,17 @@ public class ImpactServiceImpl implements ImpactService {
             throw new ResourceNotFoundException("User not found with ID: " + userId);
         }
 
-        // Calculate metrics from user's recycling history
-        List<ActionHistorique> actions = actionHistoriqueRepository.findByUserIdAndActionType(
-                Integer.valueOf(userId), "RECYCLE");
 
-        // Calculate CO2 reduction (example calculation)
-        double co2Reduction = actions.size() * 5.2; // 5.2 kg of CO2 saved per recycled device (example)
+        List<ActionHistorique> actions = actionHistoriqueRepository.findByUser_IdAndActionType(userId, "RECYCLE");
 
-        // Calculate water saved (example calculation)
-        double waterSaved = actions.size() * 1000; // 1000 liters of water saved per recycled device (example)
+        log.info(actions+"actions");
+        double co2Reduction = actions.size() * 5.2;
 
-        // Calculate materials recovered (example calculation)
-        double materialsRecovered = actions.size() * 0.5; // 0.5 kg of materials per recycled device (example)
+
+        double waterSaved = actions.size() * 1000;
+
+
+        double materialsRecovered = actions.size() * 0.5;
 
         log.info("Impact calculated for user ID: {}. CO2: {} kg, Water: {} L, Materials: {} kg",
                 userId, co2Reduction, waterSaved, materialsRecovered);
@@ -62,8 +62,11 @@ public class ImpactServiceImpl implements ImpactService {
     public ImpactResponse getTotalImpact() {
         log.info("Calculating total environmental impact across all users");
 
-  
+
         List<ActionHistorique> allActions = actionHistoriqueRepository.findByActionType("RECYCLE");
+
+        log.info( "Acton "+ allActions);
+
 
         double co2Reduction = allActions.size() * 5.2;
         double waterSaved = allActions.size() * 1000;

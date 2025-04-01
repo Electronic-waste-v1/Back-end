@@ -1,7 +1,7 @@
 package org.example.ewastev0_1.repository;
 
-import org.example.ewastev0_1.domain.entities.CommunityChallenge;
-import org.example.ewastev0_1.domain.entities.User;
+import org.example.ewastev0_1.domain.entites.CommunityChallenge;
+import org.example.ewastev0_1.domain.entites.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +16,7 @@ public interface CommunityChallengeRepository extends JpaRepository<CommunityCha
     @Query("SELECT c FROM CommunityChallenge c WHERE c.startDate > :now ORDER BY c.startDate ASC")
     Page<CommunityChallenge> findUpcomingChallenges(LocalDateTime now, Pageable pageable);
     
-    @Query("SELECT c FROM CommunityChallenge c WHERE c.startDate < :now AND c.endDate > :now ORDER BY c.startDate ASC")
+    @Query("SELECT c FROM CommunityChallenge c WHERE  c.endDate > :now ORDER BY c.startDate ASC")
     Page<CommunityChallenge> findActiveChallenges(LocalDateTime now, Pageable pageable);
     
     @Query("SELECT c FROM CommunityChallenge c WHERE c.endDate < :now ORDER BY c.endDate DESC")

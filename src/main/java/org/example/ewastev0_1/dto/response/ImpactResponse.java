@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ImpactResponse {
     private Integer userId;
-    private Double co2Reduction; // Total CO2 reduction in kg
-    private Double waterSaved; // Total water saved in liters
-    private Double materialsRecovered; // Total materials recovered in kg
+    private Double co2Reduction;
+    private Double waterSaved;
+    private Double materialsRecovered;
     private Integer recycledDevicesCount;
 }

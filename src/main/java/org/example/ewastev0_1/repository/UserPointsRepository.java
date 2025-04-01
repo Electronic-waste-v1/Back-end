@@ -1,6 +1,7 @@
 package org.example.ewastev0_1.repository;
 
 
+import org.example.ewastev0_1.domain.entites.User;
 import org.example.ewastev0_1.domain.entites.UserPoints;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface UserPointsRepository  extends JpaRepository<UserPoints, Integer
     long countByPointsTotalGreaterThan(Integer pointsTotal);
 
     List<UserPoints> findTop10ByOrderByPointsTotalDesc();
+    Optional<UserPoints> findByUser(User user);
+
 }

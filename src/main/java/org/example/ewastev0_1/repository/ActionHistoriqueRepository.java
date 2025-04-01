@@ -9,8 +9,9 @@ import java.util.List;
 
 @Repository
 public interface ActionHistoriqueRepository extends JpaRepository<ActionHistorique, Integer> {
-    List<ActionHistorique> findByUserIdAndActionType(Integer userId, String actionType);
+    List<ActionHistorique> findByUser_IdAndActionType(Integer userId, String actionType);
 
+    List<ActionHistorique> findByUser_Id(Integer userId);
     List<ActionHistorique> findByActionType(String actionType);
 
 }

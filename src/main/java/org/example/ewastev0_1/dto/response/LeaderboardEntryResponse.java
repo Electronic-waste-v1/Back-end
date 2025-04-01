@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LeaderboardEntryResponse {
-    private Integer userId; // ID of the user
-    private String userName; // Username of the user
-    private Integer points; // Total points of the user
-    private Long recycledCount; // Number of devices recycled by the user
+    private Integer userId;
+    private String userName;
+    private Integer points;
+    private Long recycledCount;
 }

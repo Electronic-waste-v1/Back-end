@@ -14,4 +14,5 @@ public interface AnnonceService {
     List<AnnonceResponse> searchAnnoncesByCategory(String category);
     List<AnnonceResponse> filterAnnoncesByPriceRange(double minPrice, double maxPrice);
     List<AnnonceResponse> filterAnnoncesByCondition(String condition);
+    List<AnnonceResponse> getAnnoncesByUserId(Integer userId);
 }

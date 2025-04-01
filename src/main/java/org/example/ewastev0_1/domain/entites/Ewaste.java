@@ -2,10 +2,7 @@ package org.example.ewastev0_1.domain.entites;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.ewastev0_1.domain.entites.Enum.Etatwaste;
 
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor
 @Entity
 public class Ewaste {
