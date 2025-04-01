@@ -1,11 +1,10 @@
-CREATE TABLE ewastes (
-                         id BIGSERIAL PRIMARY KEY,
-                         nom VARCHAR(255) NOT NULL,
-                         categorie VARCHAR(100) NOT NULL,
-                         description TEXT,
-                         date_ajout DATE NOT NULL,
-                         etat VARCHAR(50) NOT NULL CHECK (etat IN ('À Recycler', 'Réparable', 'Donné')),
-                         utilisateur_id BIGINT NOT NULL REFERENCES users(id),
-                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TYPE etatwaste_enum AS ENUM ('Recycler', 'Reparable', 'Donne');
+
+CREATE TABLE ewaste (
+                        id SERIAL PRIMARY KEY,
+                        nom VARCHAR(255),
+                        description VARCHAR(255),
+                        categorie VARCHAR(255),
+                        etat etatwaste_enum,
+                        user_id INTEGER REFERENCES users(id)
 );

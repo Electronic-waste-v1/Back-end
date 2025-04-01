@@ -18,9 +18,7 @@
     <changeSet id="004" author="developer">
         <sqlFile path="changes/004-create-annonces-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
-    <changeSet id="005" author="">
-        <sqlFile path="changes/005-create-feedbacks -table.sql" relativeToChangelogFile="true"/>
-    </changeSet>
+
     <changeSet id="006" author="">
         <sqlFile path="changes/006-create-notifications-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
